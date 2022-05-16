@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block header %}Об авторе проекта{% endblock %}
+{% block content %}
+{% load static %}
+<div class="row" style="text-align: center;">
+  <div class="col-12">
+    <img src="{% static 'img/cv.png' %}" height="200px">
+  </div>
+  <div class="col-12">
+    <h1>Денис Свашенко</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12" style="margin-top: 30px; text-align: center;">
+    <p>
+      Со школьных лет интересовался программированием, web-разработкой. В старшей школе сделали с другом небольшую игру на basic. В институте учился на программиста, но после учебы, устав от кодинга, выбрал для работы более простое направление: контент и верстка для сайтов. Сейчас хочется вернуться к более серьезной и интересной разработке. В будущем думаю взять прицел на работу с нейросетями.
+    </p>
+  </div>
+  
+</div>
+<div class="row" style="margin-top: 30px; text-align: center;">
+  <div class="col-12">
+    <img src="{% static 'img/help.png' %}" height="200px">
+  </div>
+  <div class="col-12">
+    <h2>Контакты для связи</h2>
+  </div>
+  <div class="col-12">
+    <p>Телефон: +7 (916) 307-02-60</p>
+    <p>Почта: dsvash@yandex.ru</p>
+    <p>Github: https://github.com/KzarSnake/</p>
+    <p>Телеграм: @GSnake</p>
+  </div>
+</div>
+{% endblock %} 

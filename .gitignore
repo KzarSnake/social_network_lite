@@ -25,6 +25,13 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.vscode/
+.media
 MANIFEST
 
 # PyInstaller
@@ -144,9 +151,3 @@ dmypy.json
 .history/
 
 .mypy_cache
-
-# папки со статикой и медиа
-static/
-yatube/posts/static/
-yatube/media/
-

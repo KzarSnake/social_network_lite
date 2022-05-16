@@ -1,0 +1,28 @@
+{% load thumbnail %}
+<article class="card" style="margin-bottom: 30px;">
+<ul class="list-group">
+  {% if not author %}  
+  <li class="list-group-item bg-light">
+    Автор: 
+    <a href="{% url 'posts:profile' post.author.username %}">{{ post.author.get_full_name }}</a>
+  </li>
+  {% endif %}
+  <li class="list-group-item bg-light">
+    Дата публикации: {{ post.created|date:"d E Y" }}
+  </li>
+</ul>
+{% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+  <img class="card-img-top my-2" src="{{ im.url }}">
+{% endthumbnail %}
+<div class="card-text px-5">
+<p>{{ post.text|linebreaks }}</p>
+</div>
+<div class="card-footer">
+<a style="margin-right: 10px;" class="btn btn-sm btn btn-outline-primary" href="{% url 'posts:post_detail' post.pk %}">Подробная информация</a>
+{% if post.group and not group.slug %}  
+  <a class="btn btn-sm btn btn-outline-primary" href="{% url 'posts:group_list' post.group.slug %}">
+    Все записи группы: {{ post.group.title }}
+  </a>
+{% endif %}
+</div>
+</article>

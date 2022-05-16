@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Мой стек технологий{% endblock %}
+{% block header %}Немного про технологии{% endblock %}
+{% block content %}
+{% load static %}
+<div class="row">
+<div class="col-4" style="text-align: center;">
+  <h3>На чем построен этот сайт:</h3>
+  <img src="{% static 'img/system.png' %}" width="200px" >
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      Python
+    </li>
+    <li class="list-group-item">
+      Django
+    </li>
+    <li class="list-group-item">
+      Превозмогание
+    </li>
+  </ul>
+</div>
+<div class="col-4" style="text-align: center;">
+  <h3>Что я буду знать после курса:</h3>
+  <img src="{% static 'img/idea.png' %}" width="200px">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      Python
+    </li>
+    <li class="list-group-item">
+      Django
+    </li>
+    <li class="list-group-item">
+      API
+    </li>
+    <li class="list-group-item">
+      Управление проектом на удаленном сервере
+    </li>
+    <li class="list-group-item">
+      Алгоритмы и структуры данных
+    </li>
+    <li class="list-group-item">
+      Парсинг
+    </li>
+    <li class="list-group-item">
+      Как учиться самому
+    </li>
+  </ul>
+</div>
+<div class="col-4" style="text-align: center;">
+  <h3>Что я знал до этого курса:</h3>
+  <img src="{% static 'img/internet.png' %}" width="200px">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      Delphi
+    </li>
+    <li class="list-group-item">
+      HTML &amp; CSS
+    </li>
+    <li class="list-group-item">
+      JavaScript
+    </li>
+    <li class="list-group-item">
+    </li>
+  </ul>
+</div>
+</div>
+<div class="row">
+  <article class="col-12" style="text-align: center; margin-top: 20px;">
+    <p>Обучение самому языку Python в Яндекс.Практикуме оказалось несколько проще и легче, чем изучение фреймворка Django. Обилие информации и файлов, структура - к этому необходимо привыкать, что возможно благодаря большой практике.</p>
+  </article>
+</div>
+{% endblock %} 
