@@ -2,49 +2,51 @@
 {% block title %}Профайл автора {{ author.get_full_name }}{% endblock %}
 {% block header %}Все записи автора {{ author.get_full_name }}{% endblock %}
 {% block content %}
-{% load thumbnail %}
-<div class="row justify-content-around">
-  <aside class="col-3">
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        Всего записей: <span>{{ author.posts.count }}</span>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        Количество подписок: <span>{{ author.follower.count }}</span>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        Количество подписчиков: <span>{{ author.following.count }}</span>
-      </li>
-      <li class="list-group-item">
-        {% if user.is_authenticated and author != request.user %}
-          {% if following %}
-            <a
-              class="btn btn-outline-primary d-block"
-              href="{% url 'posts:profile_unfollow' author.username %}" role="button"
-            >
-              Отписаться
-            </a>
-          {% else %}
-            <a
-              class="btn btn-primary d-block"
-              href="{% url 'posts:profile_follow' author.username %}" role="button"
-            >
-              Подписаться
-            </a>
+  {% load thumbnail %}
+  <div class="row justify-content-around">
+    <aside class="col-3">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Всего записей: <span>{{ author.posts.count }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Количество подписок: <span>{{ author.follower.count }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Количество подписчиков: <span>{{ author.following.count }}</span>
+        </li>
+        <li class="list-group-item">
+          {% if user.is_authenticated and author != request.user %}
+            {% if following %}
+              <a
+                class="btn btn-outline-primary d-block"
+                href="{% url 'posts:profile_unfollow' author.username %}" 
+                role="button"
+              >
+                Отписаться
+              </a>
+            {% else %}
+              <a
+                class="btn btn-primary d-block"
+                href="{% url 'posts:profile_follow' author.username %}" 
+                role="button"
+              >
+                Подписаться
+              </a>
+            {% endif %}
           {% endif %}
-        {% endif %}
-      </li>
-    </ul>
-  </aside>
-  {% for post in page_obj %}
-  <div class="col-9 ms-auto">
-    {% include 'includes/post.html' %}
+        </li>
+      </ul>
+    </aside>
+    {% for post in page_obj %}
+      <div class="col-9 ms-auto">
+        {% include 'includes/post.html' %}
+      </div>
+    {% endfor %}
   </div>
-  {% endfor %}
-</div>
-<div class="row justify-content-center">
-  <div class="col-4">
-    {% include 'posts/includes/paginator.html' %}
+  <div class="row justify-content-center">
+    <div class="col-4">
+      {% include 'posts/includes/paginator.html' %}
+    </div>
   </div>
-</div>
 {% endblock %}

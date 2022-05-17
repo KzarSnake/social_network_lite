@@ -2,12 +2,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.shortcuts import (
-    get_list_or_404,
-    get_object_or_404,
-    redirect,
-    render,
-)
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CommentForm, PostForm
 from .models import Follow, Group, Post
@@ -22,7 +17,7 @@ def _create_page_obj(request, post_set):
 
 
 def index(request):
-    post_set = Post.objects.all()
+    post_set = Post.objects.select_related('group', 'author').all()
     page_obj = _create_page_obj(request, post_set)
     context = {
         'page_obj': page_obj,
@@ -34,7 +29,7 @@ def index(request):
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    post_set = get_list_or_404(Post, group=group)
+    post_set = Post.objects.select_related('author').filter(group=group).all()
     page_obj = _create_page_obj(request, post_set)
     context = {
         'group': group,
@@ -45,7 +40,7 @@ def group_posts(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    post_set = author.posts.all()
+    post_set = Post.objects.select_related('group').filter(author=author).all()
     page_obj = _create_page_obj(request, post_set)
     following = Follow.objects.filter(
         author=author.id, user=request.user.id
@@ -83,12 +78,15 @@ def post_create(request):
     )
 
 
+@login_required
 def post_edit(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     if post.author != request.user:
         return redirect('posts:post_detail', post_id=post_id)
     form = PostForm(
-        request.POST or None, files=request.FILES or None, instance=post
+        request.POST or None,
+        files=request.FILES or None,
+        instance=post,
     )
     if form.is_valid():
         form.save()
@@ -117,9 +115,7 @@ def add_comment(request, post_id):
 
 @login_required
 def follow_index(request):
-    follows = Follow.objects.filter(user=request.user).all()
-    authors = follows.values_list('author', flat=True)
-    post_set = Post.objects.filter(author__in=authors).all()
+    post_set = Post.objects.filter(author__following__user=request.user).all()
     page_obj = _create_page_obj(request, post_set)
     context = {
         'page_obj': page_obj,
@@ -140,7 +136,9 @@ def profile_follow(request, username):
 @login_required
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
-    subscribe = Follow.objects.filter(author=author.id, user=request.user.id)
+    subscribe = Follow.objects.filter(
+        author=author.id, user=request.user.id
+    ).all()
     if subscribe.exists():
         subscribe.delete()
     return redirect('posts:profile', username=author.username)
