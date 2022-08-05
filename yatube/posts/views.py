@@ -29,7 +29,7 @@ def index(request):
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    post_set = Post.objects.select_related('author').filter(group=group).all()
+    post_set = group.posts.prefetch_related('author')
     page_obj = _create_page_obj(request, post_set)
     context = {
         'group': group,
@@ -40,7 +40,7 @@ def group_posts(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    post_set = Post.objects.select_related('group').filter(author=author).all()
+    post_set = author.posts.select_related('group')
     page_obj = _create_page_obj(request, post_set)
     following = Follow.objects.filter(
         author=author.id, user=request.user.id
