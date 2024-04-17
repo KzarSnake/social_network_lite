@@ -11,12 +11,14 @@ User = get_user_model()
 
 
 def _create_page_obj(request, post_set):
+    """Создает коллекцию постов для пагинатора."""
     paginator = Paginator(post_set, settings.POSTS_PER_PAGE)
     page_number = request.GET.get('page')
     return paginator.get_page(page_number)
 
 
 def index(request):
+    """Обрабатывает главную страницу."""
     post_set = Post.objects.select_related('group', 'author').all()
     page_obj = _create_page_obj(request, post_set)
     context = {
@@ -28,6 +30,7 @@ def index(request):
 
 
 def group_posts(request, slug):
+    """Обрабатывает страницу с фильтрацией постов по группе."""
     group = get_object_or_404(Group, slug=slug)
     post_set = group.posts.prefetch_related('author')
     page_obj = _create_page_obj(request, post_set)
@@ -39,6 +42,7 @@ def group_posts(request, slug):
 
 
 def profile(request, username):
+    """Обрабатывает страницу автора."""
     author = get_object_or_404(User, username=username)
     post_set = author.posts.select_related('group')
     page_obj = _create_page_obj(request, post_set)
@@ -54,6 +58,7 @@ def profile(request, username):
 
 
 def post_detail(request, post_id):
+    """Обрабатывает страницу опубликованного поста."""
     post = get_object_or_404(Post, pk=post_id)
     form = CommentForm(request.POST or None)
     comments = post.comments.all()
@@ -67,6 +72,7 @@ def post_detail(request, post_id):
 
 @login_required
 def post_create(request):
+    """Обрабатывает страницу и форму создания поста."""
     form = PostForm(request.POST or None, files=request.FILES)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -80,6 +86,7 @@ def post_create(request):
 
 @login_required
 def post_edit(request, post_id):
+    """Обрабатывает редактирование ранее созданного поста."""
     post = get_object_or_404(Post, pk=post_id)
     if post.author != request.user:
         return redirect('posts:post_detail', post_id=post_id)
@@ -102,6 +109,7 @@ def post_edit(request, post_id):
 
 @login_required
 def add_comment(request, post_id):
+    """Обрабатывает добавление комментария."""
     post = get_object_or_404(Post, pk=post_id)
     form = CommentForm(request.POST or None)
     if form.is_valid():
@@ -115,6 +123,7 @@ def add_comment(request, post_id):
 
 @login_required
 def follow_index(request):
+    """Обрабатывает страницу с фильтрацией постов по подпискам."""
     post_set = Post.objects.filter(author__following__user=request.user).all()
     page_obj = _create_page_obj(request, post_set)
     context = {
@@ -127,6 +136,7 @@ def follow_index(request):
 
 @login_required
 def profile_follow(request, username):
+    """Обрабатывает подписку на пользователя."""
     author = get_object_or_404(User, username=username)
     if author != request.user:
         Follow.objects.get_or_create(user=request.user, author=author)
@@ -135,6 +145,7 @@ def profile_follow(request, username):
 
 @login_required
 def profile_unfollow(request, username):
+    """Обрабатывает отписку от пользователя."""
     author = get_object_or_404(User, username=username)
     subscribe = Follow.objects.filter(
         author=author.id, user=request.user.id

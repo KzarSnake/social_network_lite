@@ -1,3 +1,56 @@
-# hw05_final
+# Yatube - социальная сеть
 
-[![CI](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml)
+## Описание
+Учебный проект.
+Социальная сеть для обмена мнениями и ведения записей. Авторизованные пользователи могут:
+- Читать записи других пользователей;
+- Подписываться на других пользователей и читать записи только из подписок;
+- Оставлять комментарии под записями пользователей;
+- Создавать собственные записи и добавлять изображения;
+- Отвечать в комментариях к своим записям;
+- Выйти из своего аккаунта;
+- Сменить пароль к своему аккаунту.
+
+## Стэк технологий:
+
+- Python 3.10
+- Django 3.2
+- SQLite3
+
+## Подготовка к запуску:
+
+**Клонируйте репозиторий:**
+
+```
+git clone https://github.com/KzarSnake/social_network_lite.git
+```
+
+**Установите и активируйте виртуальное окружение:**
+
+```
+python -m venv venv
+source venv/Scripts/activate
+```
+
+**Установите зависимости из файла requirements.txt:**
+
+```
+pip install -r requirements.txt
+```
+
+**Выполните миграции:**
+```
+python manage.py migrate
+```
+
+## Запуск:
+Находясь в директории проекта c файлом manage.py, выполните в терминале команду:
+
+```
+python manage.py runserver
+```
+
+
+## Автор проекта:
+
+[Денис Свашенко](https://github.com/KzarSnake)
